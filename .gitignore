@@ -12,3 +12,4 @@ frontend/dist/
 # Python
 __pycache__/
 *.pyc
+frontend/.env

@@ -12,6 +12,7 @@ from fastapi import (
     UploadFile,
     File,
 )
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -35,6 +36,15 @@ app = FastAPI(
     title="ResearchVault API",
     description="Research management backend",
     version="1.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 app.add_middleware(
     CORSMiddleware,

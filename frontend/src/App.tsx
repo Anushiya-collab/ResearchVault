@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ const [searching, setSearching] = useState(false);
     setMessage("Logging in...");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login", {
+      const response = await fetch("`${API_URL}/login`", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +75,7 @@ const loadWorkspaces = async () => {
 
   try {
     const workspaceResponse = await fetch(
-      "http://127.0.0.1:8000/workspaces",
+      `${API_URL}/workspaces`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -95,7 +96,7 @@ const loadWorkspaces = async () => {
 
       // Load sources
       const sourceResponse = await fetch(
-        `http://127.0.0.1:8000/workspaces/${workspaceId}/sources`,
+        `${API_URL}/workspaces/${workspaceId}/sources`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,7 +111,7 @@ const loadWorkspaces = async () => {
 
       // Load claims
       const claimResponse = await fetch(
-        `http://127.0.0.1:8000/workspaces/${workspaceId}/claims`,
+        `${API_URL}/workspaces/${workspaceId}/claims`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -160,7 +161,7 @@ const handleImportUrl = async () => {
 
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/sources/import-url?url=${encodeURIComponent(importUrl)}`,
+      `${API_URL}/workspaces/${selectedWorkspace.id}/sources/import-url?url=${encodeURIComponent(importUrl)}`,
       {
         method: "POST",
         headers: {
@@ -186,7 +187,7 @@ const handleImportUrl = async () => {
 
     // Refresh the source list
     const sourcesResponse = await fetch(
-      `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/sources`,
+      `${API_URL}/workspaces/${selectedWorkspace.id}/sources`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -222,7 +223,7 @@ const handleSearch = async () => {
 
   try {
     const response = await fetch(
-     `http://127.0.0.1:8000/search?q=${encodeURIComponent(searchQuery)}`,
+     `${API_URL}/search?q=${encodeURIComponent(searchQuery)}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -265,7 +266,7 @@ const handlePdfUpload = async () => {
     formData.append("file", pdfFile);
 
     const response = await fetch(
-      `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/sources/import-pdf`,
+      `${API_URL}/workspaces/${selectedWorkspace.id}/sources/import-pdf`,
       {
         method: "POST",
         headers: {
@@ -288,7 +289,7 @@ const handlePdfUpload = async () => {
     setPdfFile(null);
 
     const sourcesResponse = await fetch(
-  `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/sources`,
+  `${API_URL}/workspaces/${selectedWorkspace.id}/sources`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -316,7 +317,7 @@ const handleRefetchSource = async (sourceId: number) => {
 
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/sources/${sourceId}/refetch`,
+    `${API_URL}/sources/${sourceId}/refetch`, 
       {
         method: "POST",
         headers: {
@@ -383,7 +384,7 @@ const handleCreateWorkspace = async () => {
 
   try {
     const response = await fetch(
-      "http://127.0.0.1:8000/workspaces",
+      "${API_URL}/workspaces",
       {
         method: "POST",
         headers: {
@@ -439,7 +440,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/sources`,
+        `${API_URL}/workspaces/${selectedWorkspace.id}/sources`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -461,7 +462,7 @@ useEffect(() => {
 
       for (const source of data) {
         const versionResponse = await fetch(
-          `http://127.0.0.1:8000/sources/${source.id}/versions`,
+          `${API_URL}/sources/${source.id}/versions`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -481,7 +482,7 @@ useEffect(() => {
         }
 
         const changeResponse = await fetch(
-          `http://127.0.0.1:8000/sources/${source.id}/changes`,
+          `${API_URL}/sources/${source.id}/changes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -500,7 +501,7 @@ useEffect(() => {
           allChanges.push(changeData);
         }
         const affectedResponse = await fetch(
-  `http://127.0.0.1:8000/sources/${source.id}/affected-claims`,
+  `${API_URL}/sources/${source.id}/affected-claims`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -555,7 +556,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/workspaces/${selectedWorkspace.id}/claims`,
+        `${API_URL}/workspaces/${selectedWorkspace.id}/claims`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -600,7 +601,7 @@ useEffect(() => {
 
       for (const claim of claims) {
         const response = await fetch(
-          `http://127.0.0.1:8000/claims/${claim.id}`,
+          `${API_URL}/claims/${claim.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
