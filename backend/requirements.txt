@@ -6,7 +6,7 @@ psycopg[binary]
 python-dotenv
 python-jose
 passlib
-bcrypt
+bcrypt==4.0.1
 httpx
 beautifulsoup4
 pypdf
