@@ -6,6 +6,8 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+const [showRegister, setShowRegister] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [workspaces, setWorkspaces] = useState<any[]>([]);
   const [sources, setSources] = useState<any[]>([]);
@@ -39,7 +41,7 @@ const [searching, setSearching] = useState(false);
     setMessage("Logging in...");
 
     try {
-      const response = await fetch("`${API_URL}/login`", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,6 +67,41 @@ const [searching, setSearching] = useState(false);
       setMessage("Could not connect to the backend.");
     }
   };
+  const handleRegister = async (event: React.FormEvent) => {
+  event.preventDefault();
+
+  setMessage("Registering...");
+
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setMessage(data.detail || "Registration failed");
+      return;
+    }
+
+    setMessage("Registration successful! Please login.");
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setShowRegister(false);
+  } catch (error) {
+    setMessage("Could not connect to the backend.");
+  }
+};
 
 const loadWorkspaces = async () => {
   const token = localStorage.getItem("access_token");
@@ -1165,43 +1202,116 @@ useEffect(() => {
           Your personal research workspace
         </p>
 
-        <h2>Welcome back</h2>
+        {showRegister ? (
+  <>
+    <h2>Create an account</h2>
 
-        <form onSubmit={handleLogin}>
-          <label>Email</label>
+    <form onSubmit={handleRegister}>
+      <label>Name</label>
 
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
+      <input
+        type="text"
+        placeholder="Enter your name"
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+        required
+      />
 
-          <label>Password</label>
+      <label>Email</label>
 
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
+      <input
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        required
+      />
 
-          <button type="submit">
-            Login
-          </button>
-        </form>
+      <label>Password</label>
 
-        {message && (
-          <p className="message">
-            {message}
-          </p>
-        )}
+      <input
+        type="password"
+        placeholder="Create a password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        required
+      />
 
-        <p className="register-text">
-          Don't have an account? <span>Register</span>
-        </p>
+      <button type="submit">
+        Register
+      </button>
+    </form>
+
+    {message && (
+      <p className="message">
+        {message}
+      </p>
+    )}
+
+    <p className="register-text">
+      Already have an account?{" "}
+      <span
+        onClick={() => {
+          setShowRegister(false);
+          setMessage("");
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Login
+      </span>
+    </p>
+  </>
+) : (
+  <>
+    <h2>Welcome back</h2>
+
+    <form onSubmit={handleLogin}>
+      <label>Email</label>
+
+      <input
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        required
+      />
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        placeholder="Enter your password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        required
+      />
+
+      <button type="submit">
+        Login
+      </button>
+    </form>
+
+    {message && (
+      <p className="message">
+        {message}
+      </p>
+    )}
+
+    <p className="register-text">
+      Don't have an account?{" "}
+      <span
+        onClick={() => {
+          setShowRegister(true);
+          setMessage("");
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Register
+      </span>
+    </p>
+  </>
+)}
+
       </div>
     </div>
   );
