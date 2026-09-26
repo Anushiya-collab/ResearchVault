@@ -31,7 +31,7 @@ from app.auth import (
     ALGORITHM,
 )
 
-
+Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="ResearchVault API",
     description="Research management backend",
