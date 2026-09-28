@@ -1289,6 +1289,11 @@ useEffect(() => {
       <button type="submit">
         Login
       </button>
+      <div className="demo-credentials">
+  <strong>Demo Account</strong>
+  <p>Email: demo@researchvault.com</p>
+  <p>Password: Demo12345</p>
+</div>
     </form>
 
     {message && (
