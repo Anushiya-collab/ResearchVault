@@ -421,7 +421,7 @@ const handleCreateWorkspace = async () => {
 
   try {
     const response = await fetch(
-      "${API_URL}/workspaces",
+      "https://researchvault-7a0d.onrender.com/workspaces",
       {
         method: "POST",
         headers: {
