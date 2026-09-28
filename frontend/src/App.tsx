@@ -112,7 +112,7 @@ const loadWorkspaces = async () => {
 
   try {
     const workspaceResponse = await fetch(
-      `${API_URL}/workspaces`,
+      "https://researchvault-7a0d.onrender.com/workspaces",
       {
         headers: {
           Authorization: `Bearer ${token}`,
